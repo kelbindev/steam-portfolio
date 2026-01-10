@@ -24,10 +24,8 @@ jobs:
           ssh-keyscan -H ${{ secrets.AZURE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to Azure VM over SSH
-        env:
-          VM: ${{ secrets.AZURE_USER }}@${{ secrets.AZURE_HOST }}
         run: |
-          ssh $VM "
+          ssh -l "${{ secrets.AZURE_USER }}" "${{ secrets.AZURE_HOST }}" "
             cd ~/steam-portfolio &&
             git fetch --all &&
             git reset --hard origin/main &&
