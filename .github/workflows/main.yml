@@ -16,8 +16,8 @@ jobs:
       - name: Copy SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Add VM to known_hosts
         run: |
@@ -25,7 +25,7 @@ jobs:
 
       - name: Deploy to Azure VM over SSH
         run: |
-          ssh -l "${{ secrets.AZURE_USER }}" "${{ secrets.AZURE_HOST }}" "
+          ssh -l ~/.ssh/id_rsa "${{ secrets.AZURE_USER }}" "${{ secrets.AZURE_HOST }}" "
             cd ~/steam-portfolio &&
             git fetch --all &&
             git reset --hard origin/main &&
