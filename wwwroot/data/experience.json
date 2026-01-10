@@ -1,0 +1,52 @@
+{
+  "experiences": [
+    {
+      "position": "Fullstack Developer",
+      "company": "SHIMANO",
+      "location": "Singapore",
+      "duration": "Oct 2022 - Present",
+      "responsibilities": [
+        "Develop and optimize MES and Logistics systems utilizing a hybrid stack of .NET 8/Core, legacy .NET Framework, and Vue.js, building scalable and performant systems",
+        "Developed a centralized Single Sign-On (SSO) framework using OpenIddict (OAuth2 and OpenID), integrated with 2FA and TOTP for enhanced multi-factor authentication, reducing support overhead for login related issues by 30%",
+        "Achieved a 99.9% uptime for critical manufacturing processes by migrating legacy workflows to Google Cloud (GCP), leveraging Cloud Run Functions and Application Integration",
+        "Revamped the SDLC by implementing a Feature Branching strategy and CI/CD pipelines, reducing code conflicts by 80% and enhancing deployment reliability across SEA and China",
+        "Refactored Reporting T-SQL queries, achieving a 99% execution speed improvement (hours to seconds) by analyzing execution plan and applying proper indexing",
+        "Developed automated data integration solutions synchronizing SharePoint and Caspio platforms data to SQL Server using .NET 8 and RESTful APIs, enabling audit trail capabilities"
+      ]
+    },
+    {
+      "position": "Full Stack Developer",
+      "company": "ANACLE",
+      "location": "Singapore",
+      "duration": "Dec 2021 - Oct 2022",
+      "responsibilities": [
+        "Managed and modernized the ANACLE Simplicity system, supporting the Enterprise Asset Management (EAM) module across ASP.NET Web Forms, Web API, and Xamarin Forms",
+        "Transitioned infrastructure to H-Cloud environment, ensuring seamless data exchange and application functionality across restricted internet and intranet zones",
+        "Integrated 2FA and Google Maps services within high-security environments by managing whitelist requests and implementing local library referencing for blocked JavaScript assets"
+      ]
+    },
+    {
+      "position": "Full Stack Developer",
+      "company": "Business Connectivity",
+      "location": "Singapore",
+      "duration": "Dec 2019 - Dec 2021",
+      "responsibilities": [
+        "Engineered enterprise-scale web applications using ASP.NET Core, C#, and JavaScript, delivering high-performance backend logic and responsive UI components",
+        "Migrated legacy systems to AWS EC2, optimizing instance configurations to improve scalability and maintain a 99.9% system uptime",
+        "Developed a geolocation verification module in Flutter using Google Maps API, achieving 99% location accuracy and eliminating fraudulent field check-ins",
+        "Automated delivery scheduling by integrating Google Workspace APIs with the ERP system, triggering real-time Google Calendar updates upon invoice finalization"
+      ]
+    },
+    {
+      "position": "Software Engineer",
+      "company": "Celindo Pratama",
+      "location": "Batam, Indonesia",
+      "duration": "Aug 2014 - Dec 2019",
+      "responsibilities": [
+        "Modernized application architecture by leading the transition from ASP.NET Web Forms to ASP.NET MVC, improving maintainability and alignment with industry standards",
+        "Designed and implemented manufacturing systems tailored to client business needs using C# WinForms and ASP.NET Web Forms",
+        "Engaged directly with customers to translate complex business requirements into functional software specifications and system designs"
+      ]
+    }
+  ]
+}

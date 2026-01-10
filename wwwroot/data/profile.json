@@ -1,0 +1,16 @@
+{
+  "name": "KELBIN",
+  "title": "Fullstack Developer",
+  "summary": "Fullstack Developer with 10+ years of experience building and modernizing enterprise systems. Strong expertise in .NET ecosystems paired with Vue.js and JavaScript for frontend development. Proven ability to deliver measurable improvements�from drastically optimizing SQL query performance to implementing SSO frameworks with OpenIdDict(Oauth2/OpenID). Skilled in cloud development (Google Cloud and Azure) and establishing CI/CD pipelines that improve deployment reliability. Combines hands-on technical depth with the ability to translate business requirements into scalable, secure solutions.",
+  "level": 100,
+  "stats": [
+    {
+      "value": "10+",
+      "label": "Years Experience"
+    }
+  ],
+  "avatarUrl": "images/profile.jpg",
+  "avatarFrameUrl": "images/profile-frame.png",
+  "resumeUrl": "docs/resume.pdf"
+}
+    

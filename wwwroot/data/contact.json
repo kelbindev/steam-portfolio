@@ -1,0 +1,35 @@
+﻿{
+  "education": {
+    "degree": "Bachelor of Information Technology",
+    "school": "University of Putera Batam",
+    "location": "Batam, Indonesia"
+  },
+  "links": [
+    {
+      "icon": "bi-linkedin",
+      "text": "LinkedIn",
+      "url": "https://linkedin.com/in/kelbin-kelbin"
+    },
+    {
+      "icon": "bi-github",
+      "text": "GitHub",
+      "url": "https://github.com/kelbindev"
+    },
+    {
+      "icon": "bi-envelope-fill",
+      "text": "kelbinlin95@gmail.com",
+      "url": "mailto:kelbinlin95@gmail.com"
+    },
+    {
+      "icon": "bi-telephone-fill",
+      "text": "+65 8548 3315",
+      "url": "tel:+6585483315"
+    },
+    {
+      "icon": "bi-steam",
+      "text": "ribbit",
+      "url": "https://steamcommunity.com/id/kbkbkb95/"
+    }
+  ],
+  "location": "Singapore"
+}

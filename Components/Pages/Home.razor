@@ -1,0 +1,261 @@
+﻿@page "/"
+@using steam_portfolio.Models
+@using steam_portfolio.Services
+@inject PortfolioDataService DataService
+@rendermode InteractiveServer
+
+<PageTitle>Kelbin - Fullstack Developer Portfolio</PageTitle>
+
+@if (isLoading)
+{
+    <div class="loading-container">
+        <div class="loading-spinner">Loading...</div>
+    </div>
+}
+else
+{
+    <div class="steam-header">
+        <nav class="steam-nav">
+            <a href="/">Profile</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+        </nav>
+    </div>
+
+    <div class="steam-container">
+        <!-- Profile Header -->
+        @if (profileData != null)
+        {
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="@profileData.AvatarUrl" alt="Profile Picture" class="avatar-image" />
+                        <img src="@profileData.AvatarFrameUrl" alt="Profile Frame" class="avatar-frame" />
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="profile-name">@profileData.Name</h1>
+                        <p class="profile-subtitle">@profileData.Title</p>
+                        
+                        <div class="about-summary">
+                            <p>@profileData.Summary</p>
+                        </div>
+
+                        <div class="profile-stats">
+                            @foreach (var stat in profileData.Stats)
+                            {
+                                <div class="stat-item">
+                                    <div class="stat-value">@stat.Value</div>
+                                    <div class="stat-label">@stat.Label</div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(profileData.ResumeUrl))
+                            {
+                                <a href="@profileData.ResumeUrl" target="_blank" class="resume-button">
+                                    <i class="bi-download"></i>
+                                    <span>Download Resume</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    <div class="profile-level">
+                        <div class="level-badge">@(@DateTime.Now.Year - 1995)</div>
+                        <div class="level-label">Level</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div>
+                <!-- Skills Section -->
+                @if (skillsData != null)
+                {
+                    <div class="content-box" id="skills">
+                        <div class="content-box-header">
+                            <h2 class="content-box-title">Skills & Technologies</h2>
+                        </div>
+                        <div class="skills-section">
+                            @foreach (var category in skillsData.Categories)
+                            {
+                                <div class="skill-category">
+                                    <h3 class="skill-category-title">@category.Title</h3>
+                                    <div class="skills-list">
+                                        @foreach (var skill in category.Skills)
+                                        {
+                                            <div class="skill-badge">@skill</div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Work Experience Section -->
+                @if (experienceData != null)
+                {
+                    <div class="content-box" id="experience" style="margin-top: 20px;">
+                        <div class="content-box-header">
+                            <h2 class="content-box-title">Work Experience</h2>
+                        </div>
+                        <div class="experience-list">
+                            @foreach (var exp in experienceData.Experiences)
+                            {
+                                <div class="experience-item">
+                                    <div class="experience-header">
+                                        <div class="experience-title-section">
+                                            <h3 class="experience-position">@exp.Position</h3>
+                                            <p class="experience-company">@exp.Company • @exp.Location</p>
+                                        </div>
+                                        <div class="experience-duration">@exp.Duration</div>
+                                    </div>
+                                    <ul class="experience-description">
+                                        @foreach (var responsibility in exp.Responsibilities)
+                                        {
+                                            <li>@responsibility</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Projects Showcase -->
+                @if (projectsData != null)
+                {
+                    <div class="content-box" id="projects" style="margin-top: 20px;">
+                        <div class="content-box-header">
+                            <h2 class="content-box-title">Featured Projects</h2>
+                        </div>
+                        <div class="project-grid">
+                            @foreach (var project in projectsData.Projects)
+                            {
+                                @if (!string.IsNullOrEmpty(project.Url))
+                                {
+                                    <a href="@project.Url" target="_blank" class="project-card">
+                                        <div class="project-info">
+                                            <div class="project-title">@project.Title</div>
+                                            <div class="project-description">@project.Description</div>
+                                            <div class="project-tech">
+                                                @foreach (var tech in project.Technologies)
+                                                {
+                                                    <span class="tech-tag">@tech</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="project-card">
+                                        <div class="project-info">
+                                            <div class="project-title">@project.Title</div>
+                                            <div class="project-description">@project.Description</div>
+                                            <div class="project-tech">
+                                                @foreach (var tech in project.Technologies)
+                                                {
+                                                    <span class="tech-tag">@tech</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                @if (contactData != null)
+                {
+                    <!-- Education -->
+                    <div class="content-box">
+                        <div class="content-box-header">
+                            <h2 class="content-box-title">Education</h2>
+                        </div>
+                        <div class="education-section">
+                            <div class="education-item">
+                                <h3 class="education-degree">@contactData.Education.Degree</h3>
+                                <p class="education-school">@contactData.Education.School</p>
+                                <p class="education-location">@contactData.Education.Location</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="content-box" style="margin-top: 20px;">
+                        <div class="location-info">
+                            <i class="bi-geo-alt-fill location-icon"></i>
+                            <div class="location-text">
+                                <strong>Currently Based in</strong><br />
+                                @contactData.Location
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Links Section -->
+                    <div class="content-box" style="margin-top: 20px;">
+                        <div class="content-box-header">
+                            <h2 class="content-box-title">Connect</h2>
+                        </div>
+                        <div class="links-list">
+                            @foreach (var link in contactData.Links)
+                            {
+                                <a href="@link.Url" class="link-item" target="_blank">
+                                    <i class="@link.Icon link-icon"></i>
+                                    <span class="link-text">@link.Text</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private ProfileData? profileData;
+    private SkillsData? skillsData;
+    private ExperienceData? experienceData;
+    private ProjectsData? projectsData;
+    private ContactData? contactData;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Load all data in parallel for better performance
+            var profileTask = DataService.GetProfileDataAsync();
+            var skillsTask = DataService.GetSkillsDataAsync();
+            var experienceTask = DataService.GetExperienceDataAsync();
+            var projectsTask = DataService.GetProjectsDataAsync();
+            var contactTask = DataService.GetContactDataAsync();
+
+            await Task.WhenAll(profileTask, skillsTask, experienceTask, projectsTask, contactTask);
+
+            profileData = await profileTask;
+            skillsData = await skillsTask;
+            experienceData = await experienceTask;
+            projectsData = await projectsTask;
+            contactData = await contactTask;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
+
+

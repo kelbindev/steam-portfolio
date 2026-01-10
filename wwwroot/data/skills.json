@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "title": "Backend",
+      "skills": [
+        ".NET",
+        "C#",
+        "VB.NET",
+        "JavaScript",
+        "SQL",
+        "Dapper",
+        "EF Core",
+        "REST/SOAP API",
+        "Hangfire"
+      ]
+    },
+    {
+      "title": "Frontend",
+      "skills": [
+        "Vue.js",
+        "Blazor",
+        "ASP.NET MVC",
+        "Razor Pages",
+        "WinForms",
+        "PWA",
+        "Flutter"
+      ]
+    },
+    {
+      "title": "Database",
+      "skills": [
+        "MS SQL Server",
+        "PostgreSQL",
+        "Performance Tuning & Indexing"
+      ]
+    },
+    {
+      "title": "Cloud & DevOps",
+      "skills": [
+        "Google Cloud",
+        "Azure",
+        "CI/CD",
+        "Docker & Containerization",
+        "Attlasian Bitbucket",
+        "Attlasian Bamboo",
+        "Git",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "title": "Security & Identity",
+      "skills": [
+        "OAuth2",
+        "OpenID",
+        "SSO",
+        "OpenIdDict",
+        "JWT",
+        "2FA",
+        "TOTP"
+      ]
+    }
+  ]
+}
