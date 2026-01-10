@@ -130,8 +130,94 @@ Edit `wwwroot/data/contact.json`:
 
 ## Running the Project
 
+### Local Development
+
 ```bash
 dotnet run
 ```
 
 Then navigate to `https://localhost:7054` or `http://localhost:5112`
+
+### Docker
+
+#### Build and Run with Docker
+
+```bash
+# Build the Docker image
+docker build -t steam-portfolio .
+
+# Run the container
+docker run -d -p 5000:8080 --name steam-portfolio steam-portfolio
+```
+
+Then navigate to `http://localhost:5000`
+
+#### Using Docker Compose
+
+```bash
+# Build and start the container
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the container
+docker-compose down
+```
+
+Then navigate to `http://localhost:5000`
+
+#### Docker Commands
+
+```bash
+# Stop the container
+docker stop steam-portfolio
+
+# Start the container
+docker start steam-portfolio
+
+# Remove the container
+docker rm steam-portfolio
+
+# Remove the image
+docker rmi steam-portfolio
+
+# View running containers
+docker ps
+
+# View logs
+docker logs steam-portfolio -f
+```
+
+### Deploy to Azure Container Registry (ACR)
+
+```bash
+# Login to Azure
+az login
+
+# Create a resource group
+az group create --name steam-portfolio-rg --location southeastasia
+
+# Create ACR
+az acr create --resource-group steam-portfolio-rg --name steamportfolioacr --sku Basic
+
+# Login to ACR
+az acr login --name steamportfolioacr
+
+# Tag the image
+docker tag steam-portfolio steamportfolioacr.azurecr.io/steam-portfolio:latest
+
+# Push to ACR
+docker push steamportfolioacr.azurecr.io/steam-portfolio:latest
+
+# Deploy to Azure Container Instances
+az container create \
+  --resource-group steam-portfolio-rg \
+  --name steam-portfolio \
+  --image steamportfolioacr.azurecr.io/steam-portfolio:latest \
+  --dns-name-label steam-portfolio-kelbin \
+  --ports 8080 \
+  --registry-login-server steamportfolioacr.azurecr.io \
+  --registry-username steamportfolioacr \
+  --registry-password $(az acr credential show --name steamportfolioacr --query "passwords[0].value" -o tsv)
+```
