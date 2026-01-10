@@ -91,13 +91,16 @@ Edit `wwwroot/data/projects.json`:
     {
       "title": "Project Name",
       "description": "Description",
-      "url": "project-url",
+      "url": "project-live-url",
+      "gitHubUrl": "https://github.com/username/repo",
       "imageUrl": "image-url",
       "technologies": ["Tech1", "Tech2"]
     }
   ]
 }
 ```
+
+**Note**: Both `url` (live demo) and `gitHubUrl` are optional. If provided, corresponding buttons will appear on the project card.
 
 ### 5. Update Contact Info
 Edit `wwwroot/data/contact.json`:

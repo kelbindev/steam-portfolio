@@ -130,40 +130,39 @@ else
                     <div class="content-box" id="projects" style="margin-top: 20px;">
                         <div class="content-box-header">
                             <h2 class="content-box-title">Featured Projects</h2>
+                            <a href="https://github.com/kelbindev" target="_blank" class="view-all-link">View All on GitHub →</a>
                         </div>
                         <div class="project-grid">
                             @foreach (var project in projectsData.Projects)
                             {
-                                @if (!string.IsNullOrEmpty(project.Url))
-                                {
-                                    <a href="@project.Url" target="_blank" class="project-card">
-                                        <div class="project-info">
-                                            <div class="project-title">@project.Title</div>
-                                            <div class="project-description">@project.Description</div>
-                                            <div class="project-tech">
-                                                @foreach (var tech in project.Technologies)
-                                                {
-                                                    <span class="tech-tag">@tech</span>
-                                                }
-                                            </div>
+                                <div class="project-card">
+                                    <div class="project-info">
+                                        <div class="project-title">@project.Title</div>
+                                        <div class="project-description">@project.Description</div>
+                                        <div class="project-tech">
+                                            @foreach (var tech in project.Technologies)
+                                            {
+                                                <span class="tech-tag">@tech</span>
+                                            }
                                         </div>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <div class="project-card">
-                                        <div class="project-info">
-                                            <div class="project-title">@project.Title</div>
-                                            <div class="project-description">@project.Description</div>
-                                            <div class="project-tech">
-                                                @foreach (var tech in project.Technologies)
-                                                {
-                                                    <span class="tech-tag">@tech</span>
-                                                }
-                                            </div>
+                                        <div class="project-actions">
+                                            @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                                            {
+                                                <a href="@project.GitHubUrl" target="_blank" class="project-button github-button">
+                                                    <i class="bi-github"></i>
+                                                    <span>GitHub</span>
+                                                </a>
+                                            }
+                                            @if (!string.IsNullOrEmpty(project.Url))
+                                            {
+                                                <a href="@project.Url" target="_blank" class="project-button demo-button">
+                                                    <i class="bi-box-arrow-up-right"></i>
+                                                    <span>Live Demo</span>
+                                                </a>
+                                            }
                                         </div>
                                     </div>
-                                }
+                                </div>
                             }
                         </div>
                     </div>

@@ -4,23 +4,27 @@
       "title": "URL Shortener",
       "description": "Simple URL shortener with Minimal API, PostgreSQL hosted on Azure Web App with automated deployment via GitHub Actions",
       "url": "https://kelbin-url-shortener-cue0bccgdze6ccfy.southeastasia-01.azurewebsites.net/",
+      "gitHubUrl": "https://github.com/kelbindev/url-shortener",
       "technologies": [
         "C#",
         "Minimal API",
         "PostgreSQL",
         "Azure",
         "Azure Key Vault",
-        "Azure Web Apps"
+        "Azure Web Apps",
+        "Github Actions"
       ]
     },
     {
       "title": "Blazor Games",
       "description": "Blazor web app containing mini-games with automated deployment through GitHub Actions",
       "url": "https://kelbindev.github.io/",
+      "gitHubUrl": "https://github.com/kelbindev/blazor-games",
       "technologies": [
         "C#",
         "Blazor",
-        "Azure Static Web App"
+        "Azure Static Web App",
+        "Github Actions"
       ]
     }
   ]
