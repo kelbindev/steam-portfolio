@@ -26,11 +26,11 @@ jobs:
       - name: Deploy to Azure VM over SSH
         run: |
           ssh -i ~/.ssh/id_rsa -l "${{ secrets.AZURE_USER }}" "${{ secrets.AZURE_HOST }}" "
-          git config --global url.'https://${{ secrets.GH_PAT }}:x-oauth-basic@github.com/'.insteadOf 'https://github.com/'
-          cd ~/steam-portfolio &&
-          git fetch --all &&
-          git reset --hard origin/main &&
-          docker build -t steam-portfolio:latest . &&
-          docker rm -f steam-portfolio || true &&
-          docker run -d -p 8080:8080 --name steam-portfolio steam-portfolio:latest
-        "
+              git config --global url.'https://${{ secrets.GH_PAT }}:x-oauth-basic@github.com/'.insteadOf 'https://github.com/'
+              cd ~/steam-portfolio &&
+              git fetch --all &&
+              git reset --hard origin/main &&
+              docker build -t steam-portfolio:latest . &&
+              docker rm -f steam-portfolio || true &&
+              docker run -d -p 8080:8080 --name steam-portfolio steam-portfolio:latest
+            "
