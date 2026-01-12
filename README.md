@@ -1,12 +1,34 @@
 # Steam Portfolio - Blazor Project
 
+A Blazor Server application that displays a Steam-inspired portfolio page with data from PostgreSQL database.
+
+## Quick Start
+
+### Local Development
+See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for detailed setup instructions.
+
+1. Configure connection string in `appsettings.json` to point to your PostgreSQL server
+2. Run from Visual Studio (F5) or `dotnet run`
+
+### Production Deployment
+The application deploys to Azure VM via GitHub Actions. See [DOCKER.md](DOCKER.md) for Docker details.
+
 ## Project Structure
 
-This is a Blazor Server application that displays a Steam-inspired portfolio page with data loaded from JSON files.
+This is a Blazor Server application that displays a Steam-inspired portfolio page with data loaded from a PostgreSQL database.
 
-### Data Files (`wwwroot/data/`)
+### Database (`Database/`)
 
-All portfolio content is stored in JSON files that can be easily edited:
+Database schema and seed data:
+
+- **schema.sql** - Database schema with tables for profile, skills, experience, projects, and contact
+- **seed.sql** - Sample data to populate the database
+- **init-db.sh** - Initialization script (used in Docker)
+- **README.md** - Database documentation
+
+### Data Files (`wwwroot/data/`) - DEPRECATED
+
+?? **Note**: JSON files are being migrated to PostgreSQL. These files may be removed in future versions.
 
 - **profile.json** - Profile information (name, title, summary, level, stats, avatar)
 - **skills.json** - Skills organized by categories (Backend, Frontend, Database, etc.)
@@ -26,114 +48,43 @@ C# classes that define the structure of the data:
 
 ### Services (`Services/`)
 
-- **PortfolioDataService.cs** - Service that loads JSON data using HttpClient
+- **DatabaseService.cs** - Service that loads data from PostgreSQL using Dapper
+- **PortfolioDataService.cs** - Legacy service for JSON data (deprecated)
 
 ### Components
 
 - **Home.razor** - Main portfolio page component with Interactive Server render mode
-- Uses `@inject` to get the PortfolioDataService
-- Loads all data asynchronously on initialization
+- Uses `@inject` to get the DatabaseService
+- Loads all data asynchronously from PostgreSQL on initialization
 - Displays loading spinner while fetching data
 
 ## How to Update Content
 
-### 1. Update Profile Information
-Edit `wwwroot/data/profile.json`:
-```json
-{
-  "name": "Your Name",
-  "title": "Your Title",
-  "summary": "Your summary...",
-  "level": 100,
-  "stats": [...],
-  "avatarUrl": "your-image-url",
-  "avatarFrameUrl": "frame-url"
-}
-```
+All content is stored in PostgreSQL. You can update it by:
 
-### 2. Add/Remove Skills
-Edit `wwwroot/data/skills.json`:
-```json
-{
-  "categories": [
-    {
-      "title": "Category Name",
-      "skills": ["Skill1", "Skill2", "Skill3"]
-    }
-  ]
-}
-```
+1. **Directly modifying the database** - Connect to PostgreSQL and run UPDATE queries
+2. **Editing seed data** - Update `Database/seed.sql` and re-run it
+3. **Building an admin panel** - (Future enhancement)
 
-### 3. Update Work Experience
-Edit `wwwroot/data/experience.json`:
-```json
-{
-  "experiences": [
-    {
-      "position": "Job Title",
-      "company": "Company Name",
-      "location": "Location",
-      "duration": "Start - End",
-      "responsibilities": [
-        "Responsibility 1",
-        "Responsibility 2"
-      ]
-    }
-  ]
-}
-```
+### Database Schema
 
-### 4. Add Projects
-Edit `wwwroot/data/projects.json`:
-```json
-{
-  "projects": [
-    {
-      "title": "Project Name",
-      "description": "Description",
-      "url": "project-live-url",
-      "gitHubUrl": "https://github.com/username/repo",
-      "imageUrl": "image-url",
-      "technologies": ["Tech1", "Tech2"]
-    }
-  ]
-}
-```
+The database has the following main tables:
+- `profile` - Profile information (name, title, summary, level, avatar)
+- `stats` - Profile statistics
+- `skill_categories` & `skills` - Skills organized by categories
+- `experiences` & `experience_responsibilities` - Work experience
+- `projects` & `project_technologies` - Portfolio projects
+- `education`, `contact_links`, `location_info` - Contact information
 
-**Note**: Both `url` (live demo) and `gitHubUrl` are optional. If provided, corresponding buttons will appear on the project card.
-
-### 5. Update Contact Info
-Edit `wwwroot/data/contact.json`:
-```json
-{
-  "education": {
-    "degree": "Degree Name",
-    "school": "School Name",
-    "location": "Location"
-  },
-  "links": [
-    {
-      "icon": "??",
-      "text": "LinkedIn",
-      "url": "your-linkedin-url"
-    }
-  ],
-  "location": "Your Location"
-}
-```
-
-## Features
-
-- **Blazor Server** with Interactive rendering
-- **JSON-based content** - Easy to update without code changes
-- **Async data loading** - All data loads in parallel for performance
-- **Steam-themed design** - Modern, responsive UI
-- **Type-safe** - C# models ensure data integrity
-- **Separation of concerns** - Data, business logic, and presentation are separated
+See `Database/README.md` for detailed schema documentation.
 
 ## Running the Project
 
 ### Local Development
+
+1. Ensure your PostgreSQL server is running and accessible
+2. Update `appsettings.json` with your database connection string
+3. Run the application:
 
 ```bash
 dotnet run
@@ -141,86 +92,43 @@ dotnet run
 
 Then navigate to `https://localhost:7054` or `http://localhost:5112`
 
-### Docker
+See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for detailed instructions.
 
-#### Build and Run with Docker
+### Docker (Production)
 
-```bash
-# Build the Docker image
-docker build -t steam-portfolio .
+See [DOCKER.md](DOCKER.md) for Docker deployment instructions.
 
-# Run the container
-docker run -d -p 5000:8080 --name steam-portfolio steam-portfolio
+## Configuration
+
+### Connection String
+
+**Local Development** (`appsettings.json`):
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=<your-db-server>;Port=5432;Database=steam_portfolio;Username=postgres;Password=your_password"
+  }
+}
 ```
 
-Then navigate to `http://localhost:5000`
+**Production** (Azure VM):
+Connection string is injected via environment variable from GitHub Secrets during deployment.
 
-#### Using Docker Compose
+### GitHub Secrets (for CI/CD)
 
-```bash
-# Build and start the container
-docker-compose up -d
+Required secrets:
+- `AZURE_SSH_KEY` - SSH private key for VM access
+- `AZURE_HOST` - VM hostname or IP address
+- `AZURE_USER` - SSH username
+- `GH_PAT` - GitHub Personal Access Token
+- `CONNECTION_STRING` - PostgreSQL connection string
 
-# View logs
-docker-compose logs -f
+## Features
 
-# Stop the container
-docker-compose down
-```
-
-Then navigate to `http://localhost:5000`
-
-#### Docker Commands
-
-```bash
-# Stop the container
-docker stop steam-portfolio
-
-# Start the container
-docker start steam-portfolio
-
-# Remove the container
-docker rm steam-portfolio
-
-# Remove the image
-docker rmi steam-portfolio
-
-# View running containers
-docker ps
-
-# View logs
-docker logs steam-portfolio -f
-```
-
-### Deploy to Azure Container Registry (ACR)
-
-```bash
-# Login to Azure
-az login
-
-# Create a resource group
-az group create --name steam-portfolio-rg --location southeastasia
-
-# Create ACR
-az acr create --resource-group steam-portfolio-rg --name steamportfolioacr --sku Basic
-
-# Login to ACR
-az acr login --name steamportfolioacr
-
-# Tag the image
-docker tag steam-portfolio steamportfolioacr.azurecr.io/steam-portfolio:latest
-
-# Push to ACR
-docker push steamportfolioacr.azurecr.io/steam-portfolio:latest
-
-# Deploy to Azure Container Instances
-az container create \
-  --resource-group steam-portfolio-rg \
-  --name steam-portfolio \
-  --image steamportfolioacr.azurecr.io/steam-portfolio:latest \
-  --dns-name-label steam-portfolio-kelbin \
-  --ports 8080 \
-  --registry-login-server steamportfolioacr.azurecr.io \
-  --registry-username steamportfolioacr \
-  --registry-password $(az acr credential show --name steamportfolioacr --query "passwords[0].value" -o tsv)
-```
+- **Blazor Server** with Interactive rendering
+- **PostgreSQL database** - Robust data storage with relational structure
+- **Async data loading** - All data loads efficiently with Dapper
+- **Steam-themed design** - Modern, responsive UI
+- **Type-safe** - C# models ensure data integrity
+- **Docker ready** - Containerized for easy deployment
+- **CI/CD** - Automated deployment via GitHub Actions
