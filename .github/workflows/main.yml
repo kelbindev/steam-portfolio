@@ -32,5 +32,10 @@ jobs:
               git reset --hard origin/main &&
               docker build -t steam-portfolio:latest . &&
               docker rm -f steam-portfolio || true &&
-              docker run -d -p 8080:8080 --name steam-portfolio steam-portfolio:latest
+              docker run -d -p 8080:8080 \
+                --name steam-portfolio \
+                -e ASPNETCORE_ENVIRONMENT=Production \
+                -e ASPNETCORE_URLS=http://+:8080 \
+                -e ConnectionStrings__DefaultConnection='${{ secrets.CONNECTION_STRING }}' \
+                steam-portfolio:latest
             "

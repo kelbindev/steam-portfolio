@@ -1,6 +1,5 @@
 using steam_portfolio.Components;
 using steam_portfolio.Services;
-using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Register HttpClient for the PortfolioDataService
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(sp.GetRequiredService<NavigationManager>().BaseUri) });
-builder.Services.AddScoped<PortfolioDataService>();
+// Register DatabaseService instead of PortfolioDataService
+builder.Services.AddScoped<DatabaseService>();
 
 var app = builder.Build();
 
