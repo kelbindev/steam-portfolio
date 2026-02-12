@@ -19,23 +19,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-
-      - name: Add VM to known_hosts
-        run: |
-            if [ -z "${{ secrets.AZURE_HOST }}" ]; then
-              echo "AZURE_HOST secret is not set!" >&2
-              exit 1
-            fi
-            echo "Testing connection to ${{ secrets.AZURE_HOST }}..."
-            nc -zv ${{ secrets.AZURE_HOST }} 22 || echo "Port 22 not reachable"
-            echo "Scanning SSH host keys..."
-            ssh-keyscan -H ${{ secrets.AZURE_HOST }} 2>&1 >> ~/.ssh/known_hosts
-            if [ $? -ne 0 ]; then
-              echo "ssh-keyscan failed!" >&2
-              exit 1
-            fi
-            echo "SSH host keys added successfully"
-
+          
       - name: Deploy to Azure VM over SSH
         run: |
           ssh -i ~/.ssh/id_rsa -l "${{ secrets.AZURE_USER }}" "${{ secrets.AZURE_HOST }}" "
