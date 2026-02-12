@@ -26,6 +26,8 @@ jobs:
               echo "AZURE_HOST secret is not set!" >&2
               exit 1
             fi
+            echo "Testing connection to ${{ secrets.AZURE_HOST }}..."
+            nc -zv ${{ secrets.AZURE_HOST }} 22 || echo "Port 22 not reachable"
             ssh-keyscan -H ${{ secrets.AZURE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to Azure VM over SSH
