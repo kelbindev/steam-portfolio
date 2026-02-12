@@ -50,31 +50,26 @@ public class DatabaseService
     {
         using var connection = CreateConnection();
         
-        const string categoriesQuery = @"
-            SELECT id, title
-            FROM skill_categories
-            ORDER BY display_order";
+        const string query = @"
+            SELECT 
+                sc.id AS CategoryId,
+                sc.title AS CategoryTitle,
+                s.name AS SkillName
+            FROM skill_categories sc
+            LEFT JOIN skills s ON sc.id = s.category_id
+            ORDER BY sc.display_order, s.display_order";
 
-        const string skillsQuery = @"
-            SELECT category_id AS CategoryId, name
-            FROM skills
-            ORDER BY display_order";
-
-        var categories = await connection.QueryAsync<SkillCategoryDb>(categoriesQuery);
-        var allSkills = await connection.QueryAsync<SkillDb>(skillsQuery);
+        var results = await connection.QueryAsync<(int CategoryId, string CategoryTitle, string? SkillName)>(query);
         
-        var skillsByCategory = allSkills
-            .GroupBy(s => s.CategoryId)
-            .ToDictionary(g => g.Key, g => g.Select(s => s.Name).ToList());
-
         var skillsData = new SkillsData();
+        var groupedResults = results.GroupBy(r => new { r.CategoryId, r.CategoryTitle });
 
-        foreach (var category in categories)
+        foreach (var group in groupedResults)
         {
             skillsData.Categories.Add(new SkillCategory
             {
-                Title = category.Title,
-                Skills = skillsByCategory.GetValueOrDefault(category.Id) ?? new List<string>()
+                Title = group.Key.CategoryTitle,
+                Skills = group.Where(r => r.SkillName != null).Select(r => r.SkillName!).ToList()
             });
         }
 
@@ -85,34 +80,32 @@ public class DatabaseService
     {
         using var connection = CreateConnection();
         
-        const string experiencesQuery = @"
-            SELECT id, position, company, location, duration
-            FROM experiences
-            ORDER BY display_order";
+        const string query = @"
+            SELECT 
+                e.id AS ExperienceId,
+                e.position AS Position,
+                e.company AS Company,
+                e.location AS Location,
+                e.duration AS Duration,
+                er.description AS Responsibility
+            FROM experiences e
+            LEFT JOIN experience_responsibilities er ON e.id = er.experience_id
+            ORDER BY e.display_order, er.display_order";
 
-        const string responsibilitiesQuery = @"
-            SELECT experience_id AS ExperienceId, description
-            FROM experience_responsibilities
-            ORDER BY display_order";
-
-        var experiences = await connection.QueryAsync<ExperienceDb>(experiencesQuery);
-        var allResponsibilities = await connection.QueryAsync<ResponsibilityDb>(responsibilitiesQuery);
+        var results = await connection.QueryAsync<(int ExperienceId, string Position, string Company, string Location, string Duration, string? Responsibility)>(query);
         
-        var responsibilitiesByExperience = allResponsibilities
-            .GroupBy(r => r.ExperienceId)
-            .ToDictionary(g => g.Key, g => g.Select(r => r.Description).ToList());
-
         var experienceData = new ExperienceData();
+        var groupedResults = results.GroupBy(r => new { r.ExperienceId, r.Position, r.Company, r.Location, r.Duration });
 
-        foreach (var exp in experiences)
+        foreach (var group in groupedResults)
         {
             experienceData.Experiences.Add(new Experience
             {
-                Position = exp.Position,
-                Company = exp.Company,
-                Location = exp.Location,
-                Duration = exp.Duration,
-                Responsibilities = responsibilitiesByExperience.GetValueOrDefault(exp.Id) ?? new List<string>()
+                Position = group.Key.Position,
+                Company = group.Key.Company,
+                Location = group.Key.Location,
+                Duration = group.Key.Duration,
+                Responsibilities = group.Where(r => r.Responsibility != null).Select(r => r.Responsibility!).ToList()
             });
         }
 
@@ -123,35 +116,34 @@ public class DatabaseService
     {
         using var connection = CreateConnection();
         
-        const string projectsQuery = @"
-            SELECT id, title, description, url, github_url AS GitHubUrl, image_url AS ImageUrl
-            FROM projects
-            ORDER BY display_order";
+        const string query = @"
+            SELECT 
+                p.id AS ProjectId,
+                p.title AS Title,
+                p.description AS Description,
+                p.url AS Url,
+                p.github_url AS GitHubUrl,
+                p.image_url AS ImageUrl,
+                pt.technology AS Technology
+            FROM projects p
+            LEFT JOIN project_technologies pt ON p.id = pt.project_id
+            ORDER BY p.display_order, pt.display_order";
 
-        const string technologiesQuery = @"
-            SELECT project_id AS ProjectId, technology
-            FROM project_technologies
-            ORDER BY display_order";
-
-        var projects = await connection.QueryAsync<ProjectDb>(projectsQuery);
-        var allTechnologies = await connection.QueryAsync<TechnologyDb>(technologiesQuery);
+        var results = await connection.QueryAsync<(int ProjectId, string Title, string Description, string? Url, string? GitHubUrl, string? ImageUrl, string? Technology)>(query);
         
-        var technologiesByProject = allTechnologies
-            .GroupBy(t => t.ProjectId)
-            .ToDictionary(g => g.Key, g => g.Select(t => t.Technology).ToList());
-
         var projectsData = new ProjectsData();
+        var groupedResults = results.GroupBy(r => new { r.ProjectId, r.Title, r.Description, r.Url, r.GitHubUrl, r.ImageUrl });
 
-        foreach (var proj in projects)
+        foreach (var group in groupedResults)
         {
             projectsData.Projects.Add(new Project
             {
-                Title = proj.Title,
-                Description = proj.Description,
-                Url = proj.Url ?? string.Empty,
-                GitHubUrl = proj.GitHubUrl ?? string.Empty,
-                ImageUrl = proj.ImageUrl ?? string.Empty,
-                Technologies = technologiesByProject.GetValueOrDefault(proj.Id) ?? new List<string>()
+                Title = group.Key.Title,
+                Description = group.Key.Description,
+                Url = group.Key.Url ?? string.Empty,
+                GitHubUrl = group.Key.GitHubUrl ?? string.Empty,
+                ImageUrl = group.Key.ImageUrl ?? string.Empty,
+                Technologies = group.Where(r => r.Technology != null).Select(r => r.Technology!).ToList()
             });
         }
 
