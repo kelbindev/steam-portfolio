@@ -28,7 +28,13 @@ jobs:
             fi
             echo "Testing connection to ${{ secrets.AZURE_HOST }}..."
             nc -zv ${{ secrets.AZURE_HOST }} 22 || echo "Port 22 not reachable"
-            ssh-keyscan -H ${{ secrets.AZURE_HOST }} >> ~/.ssh/known_hosts
+            echo "Scanning SSH host keys..."
+            ssh-keyscan -H ${{ secrets.AZURE_HOST }} 2>&1 >> ~/.ssh/known_hosts
+            if [ $? -ne 0 ]; then
+              echo "ssh-keyscan failed!" >&2
+              exit 1
+            fi
+            echo "SSH host keys added successfully"
 
       - name: Deploy to Azure VM over SSH
         run: |
