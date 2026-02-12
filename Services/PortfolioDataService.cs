@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
-using steam_portfolio.Models;
+using Models;
 
-namespace steam_portfolio.Services;
+namespace Services;
 
 public class PortfolioDataService
 {

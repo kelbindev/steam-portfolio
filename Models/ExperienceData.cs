@@ -1,4 +1,4 @@
-namespace steam_portfolio.Models;
+namespace Models;
 
 public class ExperienceData
 {

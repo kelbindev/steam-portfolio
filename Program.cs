@@ -1,5 +1,5 @@
+using Services;
 using steam_portfolio.Components;
-using steam_portfolio.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
