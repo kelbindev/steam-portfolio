@@ -16,10 +16,10 @@ else
 {
     <div class="steam-header">
         <nav class="steam-nav">
-            <a href="/">Profile</a>
-            <a href="#skills">Skills</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
+            <a href="/">🏠 Profile</a>
+            <a href="#achievements">🏆 Skills</a>
+            <a href="#experience">📜 Career Quests</a>
+            <a href="#games">🎮 Game Library</a>
         </nav>
     </div>
 
@@ -38,6 +38,7 @@ else
                         <p class="profile-subtitle">@profileData.Title</p>
                         
                         <div class="about-summary">
+                            <div class="player-bio-header">👤 Player Bio</div>
                             <p>@profileData.Summary</p>
                         </div>
 
@@ -60,7 +61,11 @@ else
                     </div>
                     <div class="profile-level">
                         <div class="level-badge">@(@DateTime.Now.Year - 1995)</div>
-                        <div class="level-label">Level</div>
+                        <div class="level-label">Steam Level</div>
+                        <div class="xp-bar">
+                            <div class="xp-fill" style="width: 85%"></div>
+                        </div>
+                        <div class="xp-text">850 / 1000 XP</div>
                     </div>
                 </div>
             </div>
@@ -73,19 +78,21 @@ else
                 <!-- Skills Section -->
                 @if (skillsData != null)
                 {
-                    <div class="content-box" id="skills">
+                    <div class="content-box" id="achievements">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">Skills & Technologies</h2>
+                            <h2 class="content-box-title">🏆 Skills</h2>
                         </div>
-                        <div class="skills-section">
+                        <div class="achievements-section">
                             @foreach (var category in skillsData.Categories)
                             {
-                                <div class="skill-category">
-                                    <h3 class="skill-category-title">@category.Title</h3>
-                                    <div class="skills-list">
+                                <div class="achievement-category">
+                                    <h3 class="achievement-category-title">@category.Title</h3>
+                                    <div class="achievements-list">
                                         @foreach (var skill in category.Skills)
                                         {
-                                            <div class="skill-badge">@skill</div>
+                                            <div class="achievement-badge unlocked">
+                                                <div class="achievement-name">@skill</div>
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -94,70 +101,90 @@ else
                     </div>
                 }
 
-                <!-- Work Experience Section -->
+                <!-- Career Quests Section -->
                 @if (experienceData != null)
                 {
                     <div class="content-box" id="experience" style="margin-top: 20px;">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">Work Experience</h2>
+                            <h2 class="content-box-title">📜 Career Quests</h2>
                         </div>
                         <div class="experience-list">
-                            @foreach (var exp in experienceData.Experiences)
+                            @for (int i = 0; i < experienceData.Experiences.Count; i++)
                             {
-                                <div class="experience-item">
+                                var exp = experienceData.Experiences[i];
+                                var isCurrentJob = i == 0;
+                                <div class="experience-item quest-item @(isCurrentJob ? "quest-in-progress" : "")">
                                     <div class="experience-header">
                                         <div class="experience-title-section">
                                             <h3 class="experience-position">@exp.Position</h3>
-                                            <p class="experience-company">@exp.Company • @exp.Location</p>
+                                            <p class="experience-company">@exp.Company • 📍 @exp.Location</p>
                                         </div>
                                         <div class="experience-duration">@exp.Duration</div>
                                     </div>
-                                    <ul class="experience-description">
-                                        @foreach (var responsibility in exp.Responsibilities)
-                                        {
-                                            <li>@responsibility</li>
-                                        }
-                                    </ul>
+                                    @if (isCurrentJob)
+                                    {
+                                        <div class="quest-status quest-in-progress-badge">▶ IN PROGRESS</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="quest-status">✓ COMPLETED</div>
+                                    }
+                                    <div class="quest-objectives">
+                                        <div class="quest-label">Quest Objectives:</div>
+                                        <ul class="experience-description">
+                                            @foreach (var responsibility in exp.Responsibilities)
+                                            {
+                                                <li>@responsibility</li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                             }
                         </div>
                     </div>
                 }
 
-                <!-- Projects Showcase -->
+                <!-- Game Library -->
                 @if (projectsData != null)
                 {
-                    <div class="content-box" id="projects" style="margin-top: 20px;">
+                    <div class="content-box" id="games" style="margin-top: 20px;">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">Featured Projects</h2>
-                            <a href="https://github.com/kelbindev" target="_blank" class="view-all-link">View All on GitHub →</a>
+                            <h2 class="content-box-title">🎮 Game Library</h2>
+                            <a href="https://github.com/kelbindev" target="_blank" class="view-all-link">View All Games on GitHub →</a>
+                        </div>
+                        <div class="library-stats">
+                            <span class="library-count">@projectsData.Projects.Count Games</span>
+                            <span class="library-separator">•</span>
+                            <span class="library-status">Ready to Play</span>
                         </div>
                         <div class="project-grid">
                             @foreach (var project in projectsData.Projects)
                             {
-                                <div class="project-card">
+                                <div class="game-card">
+                                    <div class="game-status-badge">INSTALLED</div>
                                     <div class="project-info">
-                                        <div class="project-title">@project.Title</div>
+                                        <div class="game-title">@project.Title</div>
                                         <div class="project-description">@project.Description</div>
-                                        <div class="project-tech">
+                                        <div class="game-tech">
+                                            <div class="tech-label">🔧 Built With:</div>
                                             @foreach (var tech in project.Technologies)
                                             {
                                                 <span class="tech-tag">@tech</span>
                                             }
                                         </div>
-                                        <div class="project-actions">
-                                            @if (!string.IsNullOrEmpty(project.GitHubUrl))
-                                            {
-                                                <a href="@project.GitHubUrl" target="_blank" class="project-button github-button">
-                                                    <i class="bi-github"></i>
-                                                    <span>GitHub</span>
-                                                </a>
-                                            }
+                                        <div class="game-actions">
                                             @if (!string.IsNullOrEmpty(project.Url))
                                             {
-                                                <a href="@project.Url" target="_blank" class="project-button demo-button">
-                                                    <i class="bi-box-arrow-up-right"></i>
-                                                    <span>Live Demo</span>
+                                                <a href="@project.Url" target="_blank" class="game-button play-button">
+                                                    <i class="bi-play-circle-fill"></i>
+                                                    <span>Play Now</span>
+                                                </a>
+                                            }
+                                            @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                                            {
+                                                <a href="@project.GitHubUrl" target="_blank" class="game-button source-button">
+                                                    <i class="bi-github"></i>
+                                                    <span>View Source</span>
                                                 </a>
                                             }
                                         </div>
@@ -226,6 +253,52 @@ else
     private ProjectsData? projectsData;
     private ContactData? contactData;
     private bool isLoading = true;
+
+    private int GetTotalSkillsCount()
+    {
+        return skillsData?.Categories.Sum(c => c.Skills.Count) ?? 0;
+    }
+
+    private string GetAchievementIcon(string categoryTitle)
+    {
+        return categoryTitle.ToLower() switch
+        {
+            var title when title.Contains("backend") || title.Contains("server") => "bi-server",
+            var title when title.Contains("frontend") || title.Contains("client") => "bi-palette-fill",
+            var title when title.Contains("database") => "bi-database-fill",
+            var title when title.Contains("cloud") || title.Contains("devops") => "bi-cloud-fill",
+            var title when title.Contains("security") || title.Contains("identity") => "bi-shield-lock-fill",
+            var title when title.Contains("mobile") => "bi-phone-fill",
+            var title when title.Contains("framework") => "bi-tools",
+            var title when title.Contains("tool") => "bi-tools",
+            var title when title.Contains("language") => "bi-code-slash",
+            _ => "bi-star-fill"
+        };
+    }
+
+    private string GetSkillIcon(string skillName)
+    {
+        var skill = skillName.ToLower();
+        return skill switch
+        {
+            var s when s.Contains("azure") => "bi-microsoft",
+            var s when s.Contains("google") || s.Contains("gcp") => "bi-google",
+            var s when s.Contains("postgres") => "bi-database-fill-gear",
+            var s when s.Contains("sql server") || s.Contains("ms sql") => "bi-database-fill",
+            var s when s.Contains(".net") => "bi-box-fill",
+            var s when s.Contains("c#") => "bi-code-square",
+            var s when s.Contains("javascript") => "bi-filetype-js",
+            var s when s.Contains("vue") => "bi-filetype-vue",
+            var s when s.Contains("docker") => "bi-box-seam-fill",
+            var s when s.Contains("git") => "bi-git",
+            var s when s.Contains("blazor") => "bi-lightning-charge-fill",
+            var s when s.Contains("flutter") => "bi-phone-fill",
+            var s when s.Contains("api") => "bi-plugin",
+            var s when s.Contains("security") || s.Contains("oauth") || s.Contains("jwt") || s.Contains("sso") => "bi-shield-lock-fill",
+            var s when s.Contains("ci/cd") => "bi-arrow-repeat",
+            _ => "bi-star-fill"
+        };
+    }
 
     protected override async Task OnInitializedAsync()
     {
