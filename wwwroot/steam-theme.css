@@ -690,19 +690,19 @@ body::before {
 }
 
 .play-button {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    border-color: #90ee90;
-    color: white;
+    background: linear-gradient(135deg, var(--steam-accent) 0%, var(--steam-highlight) 100%);
+    border-color: var(--steam-highlight);
+    color: #0e1419;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .play-button:hover {
-    background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
-    border-color: #90ee90;
+    background: linear-gradient(135deg, var(--steam-highlight) 0%, var(--steam-accent) 100%);
+    border-color: var(--steam-highlight);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+    box-shadow: 0 6px 20px var(--glow-blue);
 }
 
 .source-button {
@@ -1002,7 +1002,7 @@ body::before {
 }
 
 .quest-item .experience-description li::before {
-    content: '?';
+    content: '›';
     color: #90ee90;
     font-weight: 700;
     font-size: 14px;
@@ -1071,7 +1071,7 @@ body::before {
 }
 
 .experience-description li::before {
-    content: '?';
+    content: '›';
     position: absolute;
     left: 0;
     color: var(--steam-highlight);

@@ -16,10 +16,10 @@ else
 {
     <div class="steam-header">
         <nav class="steam-nav">
-            <a href="/">🏠 Profile</a>
-            <a href="#achievements">🏆 Skills</a>
-            <a href="#experience">📜 Career Quests</a>
-            <a href="#games">🎮 Game Library</a>
+            <a href="/">Profile</a>
+            <a href="#achievements">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#games">Projects</a>
         </nav>
     </div>
 
@@ -38,7 +38,7 @@ else
                         <p class="profile-subtitle">@profileData.Title</p>
                         
                         <div class="about-summary">
-                            <div class="player-bio-header">👤 Player Bio</div>
+                            <div class="player-bio-header">About</div>
                             <p>@profileData.Summary</p>
                         </div>
 
@@ -59,14 +59,6 @@ else
                             }
                         </div>
                     </div>
-                    <div class="profile-level">
-                        <div class="level-badge">@(@DateTime.Now.Year - 1995)</div>
-                        <div class="level-label">Steam Level</div>
-                        <div class="xp-bar">
-                            <div class="xp-fill" style="width: 85%"></div>
-                        </div>
-                        <div class="xp-text">850 / 1000 XP</div>
-                    </div>
                 </div>
             </div>
         }
@@ -80,7 +72,7 @@ else
                 {
                     <div class="content-box" id="achievements">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">🏆 Skills</h2>
+                            <h2 class="content-box-title">Skills</h2>
                         </div>
                         <div class="achievements-section">
                             @foreach (var category in skillsData.Categories)
@@ -106,7 +98,7 @@ else
                 {
                     <div class="content-box" id="experience" style="margin-top: 20px;">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">📜 Career Quests</h2>
+                            <h2 class="content-box-title">Experience</h2>
                         </div>
                         <div class="experience-list">
                             @for (int i = 0; i < experienceData.Experiences.Count; i++)
@@ -117,20 +109,19 @@ else
                                     <div class="experience-header">
                                         <div class="experience-title-section">
                                             <h3 class="experience-position">@exp.Position</h3>
-                                            <p class="experience-company">@exp.Company • 📍 @exp.Location</p>
+                                            <p class="experience-company">@exp.Company • @exp.Location</p>
                                         </div>
                                         <div class="experience-duration">@exp.Duration</div>
                                     </div>
                                     @if (isCurrentJob)
                                     {
-                                        <div class="quest-status quest-in-progress-badge">▶ IN PROGRESS</div>
+                                        <div class="quest-status quest-in-progress-badge">Current</div>
                                     }
                                     else
                                     {
-                                        <div class="quest-status">✓ COMPLETED</div>
+                                        <div class="quest-status">Completed</div>
                                     }
                                     <div class="quest-objectives">
-                                        <div class="quest-label">Quest Objectives:</div>
                                         <ul class="experience-description">
                                             @foreach (var responsibility in exp.Responsibilities)
                                             {
@@ -149,24 +140,21 @@ else
                 {
                     <div class="content-box" id="games" style="margin-top: 20px;">
                         <div class="content-box-header">
-                            <h2 class="content-box-title">🎮 Game Library</h2>
-                            <a href="https://github.com/kelbindev" target="_blank" class="view-all-link">View All Games on GitHub →</a>
-                        </div>
-                        <div class="library-stats">
-                            <span class="library-count">@projectsData.Projects.Count Games</span>
-                            <span class="library-separator">•</span>
-                            <span class="library-status">Ready to Play</span>
+                            <h2 class="content-box-title">Projects</h2>
+                            <a href="https://github.com/kelbindev" target="_blank" class="view-all-link">View on GitHub →</a>
                         </div>
                         <div class="project-grid">
                             @foreach (var project in projectsData.Projects)
                             {
                                 <div class="game-card">
-                                    <div class="game-status-badge">INSTALLED</div>
+                                    @if (!string.IsNullOrEmpty(project.Url))
+                                    {
+                                        <div class="game-status-badge">Live</div>
+                                    }
                                     <div class="project-info">
                                         <div class="game-title">@project.Title</div>
                                         <div class="project-description">@project.Description</div>
                                         <div class="game-tech">
-                                            <div class="tech-label">🔧 Built With:</div>
                                             @foreach (var tech in project.Technologies)
                                             {
                                                 <span class="tech-tag">@tech</span>
@@ -177,7 +165,7 @@ else
                                             {
                                                 <a href="@project.Url" target="_blank" class="game-button play-button">
                                                     <i class="bi-play-circle-fill"></i>
-                                                    <span>Play Now</span>
+                                                    <span>Live Demo</span>
                                                 </a>
                                             }
                                             @if (!string.IsNullOrEmpty(project.GitHubUrl))
