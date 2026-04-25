@@ -21,9 +21,9 @@
 }
 
 body {
-    background: 
+    background:
         linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 31, 58, 0.95) 25%, rgba(27, 40, 56, 0.95) 50%, rgba(15, 20, 25, 0.95) 100%),
-        url('https://shared.fastly.steamstatic.com/community_assets/images/items/1465680/ee46cc3b6988057d435be7e391472d46f278d87a.jpg') center/cover fixed;
+        url('https://shared.fastly.steamstatic.com/community_assets/images/items/1465680/ee46cc3b6988057d435be7e391472d46f278d87a.jpg') center/cover;
     color: var(--steam-text);
     font-family: "Segoe UI", "Motiva Sans", Arial, Helvetica, sans-serif;
     min-height: 100vh;
@@ -69,6 +69,7 @@ body::before {
     position: sticky;
     top: 0;
     z-index: 100;
+    will-change: transform;
 }
 
 .steam-nav {
@@ -404,7 +405,7 @@ body::before {
 
 @keyframes xpPulse {
     0%, 100% { opacity: 0.9; }
-    50% { opacity: 1; box-shadow: 0 0 20px var(--glow-blue-strong); }
+    50% { opacity: 1; }
 }
 
 .xp-text {
@@ -958,8 +959,8 @@ body::before {
 }
 
 @keyframes questPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-    50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); }
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
 }
 
 .quest-status {
@@ -984,8 +985,8 @@ body::before {
 }
 
 @keyframes badgePulse {
-    0%, 100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
-    50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
 }
 
 .quest-objectives {
